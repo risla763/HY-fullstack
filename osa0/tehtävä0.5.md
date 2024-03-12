@@ -1,3 +1,5 @@
+```mermaid
+
 sequenceDiagram
     participant browser
     participant server
@@ -27,3 +29,5 @@ https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
     server-->>browser: [{"content":"single page","date":"2024-03-10T01:57:40.646Z"},{"content":"test 2024","date":"2024-03-10T02:03:12.210Z"}....]
     deactivate server
+
+    ```

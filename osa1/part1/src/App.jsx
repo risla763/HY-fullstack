@@ -1,7 +1,5 @@
 import { useState } from 'react'
 
-
-
 const App = () => {
   // tallenna napit omaan tilaansa
   // title:
@@ -69,6 +67,13 @@ const StatisticsText = ({ statistics }) => {
 
 const Statistics = (props) => {
   console.log(props)
+  if (props.good === 0 && props.bad === 0 && props.neutral === 0) {
+    return (
+    <div>
+      <p>No feedback given</p>
+    </div>
+    )
+  }
   return (
     <div>
     {props.textGood} {props.good}<br></br>
@@ -80,5 +85,7 @@ const Statistics = (props) => {
     </div>
   )
 }
+
+
 
 export default App

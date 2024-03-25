@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+
+
 const App = () => {
   // tallenna napit omaan tilaansa
   // title:
@@ -48,14 +50,11 @@ const App = () => {
       <button onClick={handleGoodClick}>Good</button>
       <button onClick={handleNeutralClick}>Neutral</button>
       <button onClick={handleBadClick}>Bad</button>
-      <Statistics statistics={statistics} />
-      good {good} <br></br>
-      neutral {neutral} <br></br>
-      bad {bad} <br></br>
-      all {total}<br></br>
-      average {(good - bad)/ total} <br></br>
-      positive {good/ (0.01*total)} % <br></br>
-
+      <StatisticsText statistics={statistics} />
+      <Statistics good={good} textGood= {"good"} textBad= {"bad"} textNeutral= {"neutral"} 
+      total = {total} textAverage= {"average"} textPositive= {"positive"}  bad={bad} neutral={neutral}
+      average={(good - bad)/ total}
+      positive = {good/ (0.01*total)} />
     </div>
   )
 }
@@ -64,9 +63,22 @@ const Header = ({ header }) => {
   return <h1>{header.title}</h1>
 }
 
-const Statistics = ({ statistics }) => {
+const StatisticsText = ({ statistics }) => {
   return <h1>{statistics.text}</h1>
 }
 
+const Statistics = (props) => {
+  console.log(props)
+  return (
+    <div>
+    {props.textGood} {props.good}<br></br>
+    {props.textNeutral} {props.neutral}<br></br>
+    {props.textBad} {props.bad} <br></br>
+    all {props.total} <br></br>
+    {props.textAverage} {props.average}<br></br>
+    {props.textPositive} {props.positive} %<br></br>
+    </div>
+  )
+}
 
 export default App

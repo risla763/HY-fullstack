@@ -44,26 +44,44 @@ const App = () => {
 
   return (
     <div>
-      <Header header={header} />
-      <button onClick={handleGoodClick}>Good</button>
-      <button onClick={handleNeutralClick}>Neutral</button>
-      <button onClick={handleBadClick}>Bad</button>
-      <StatisticsText statistics={statistics} />
+      <Header header={header.title} />
+      <ButtonInfo goodClick={handleGoodClick} badClick={handleBadClick} 
+      neutralClick={handleNeutralClick}/>
+      <Header header={statistics.text} />
       <Statistics good={good} textGood= {"good"} textBad= {"bad"} textNeutral= {"neutral"} 
       total = {total} textAverage= {"average"} textPositive= {"positive"}  bad={bad} neutral={neutral}
       average={(good - bad)/ total}
       positive = {good/ (0.01*total)} />
     </div>
   )
+
+
 }
 
-const Header = ({ header }) => {
-  return <h1>{header.title}</h1>
+const ButtonInfo = (props) => {
+  return (
+    <div>
+      <Button text="Good" value={props.goodClick}/>
+      <Button text="Neutral" value={props.neutralClick}/>
+      <Button text="Bad" value={props.badClick}/>
+    </div>
+  )
 }
 
-const StatisticsText = ({ statistics }) => {
-  return <h1>{statistics.text}</h1>
+const Button = ( {text, value}) => {
+  return (
+  <>
+    <button onClick={value}>{text}</button>
+  </>
+  )
 }
+
+
+const Header = ( {header} ) => {
+  return <h1>{header}</h1>
+}
+
+
 
 const Statistics = (props) => {
   console.log(props)
@@ -76,13 +94,21 @@ const Statistics = (props) => {
   }
   return (
     <div>
-    {props.textGood} {props.good}<br></br>
-    {props.textNeutral} {props.neutral}<br></br>
-    {props.textBad} {props.bad} <br></br>
-    all {props.total} <br></br>
-    {props.textAverage} {props.average}<br></br>
-    {props.textPositive} {props.positive} %<br></br>
+      <StatisticLine text="good" value={props.good}/>
+      <StatisticLine text="neutral" value={props.neutral}/>
+      <StatisticLine text="bad" value={props.bad}/>
+      <StatisticLine text="all" value={props.total}/>
+      <StatisticLine text="average" value={props.average}/>
+      <StatisticLine text="positive" value={props.positive + '%'}/>
     </div>
+  )
+}
+
+const StatisticLine = ( {text, value} ) => {
+  return (
+  <>
+    {text} {value}<br></br>
+  </>
   )
 }
 

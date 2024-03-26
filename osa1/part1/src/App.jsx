@@ -26,19 +26,28 @@ const App = () => {
     console.log('value now', newValue)
     setToValue(newValue)
     }
-  
+
 
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
   const [total, setTotal] = useState(0)
   const [selected, setSelected] = useState(0)
+  const [points, setList] = useState([0, 0, 0, 0, 0, 0, 0, 0])
 
   const handleAnecdote = () => {
     const updateSelected = Math.floor(Math.random()*8)
     setSelected(updateSelected)
     console.log('anecdote', selected)
 
+  }
+
+  const handleVote = () => {
+    const copy = [...points]
+    copy[selected] += 1
+    setList(copy)
+    console.log('tätä nyt updated', selected)
+    console.log('uus lista', copy)
   }
 
   const handleGoodClick = () => {
@@ -66,6 +75,8 @@ const App = () => {
   return (
     <div>
       {anecdotes[selected]} <br></br>
+      has {points[selected]} votes <br></br>
+      <Button text="vote" value={handleVote}/>
       <Button value={handleAnecdote} text="next anecdote"/>
       <Header header={header.title} />
       <ButtonInfo goodClick={handleGoodClick} badClick={handleBadClick} 

@@ -22,6 +22,14 @@ const App = () => {
   const statistics = {
     text: "statistics"
   }
+
+  const anecdote = [
+  {
+   title: "Anecdote with most votes"
+  },
+  { title:"Anecdote of the day"
+}
+  ]
   const setToValue = (newValue) => {
     console.log('value now', newValue)
     setToValue(newValue)
@@ -34,13 +42,16 @@ const App = () => {
   const [total, setTotal] = useState(0)
   const [selected, setSelected] = useState(0)
   const [points, setList] = useState([0, 0, 0, 0, 0, 0, 0, 0])
+  const [highest, setHighest] = useState(0)
+  const [mostVoted, setMostVoted] = useState(0)
+  const [mostVotedAnecdote, setMostVotedAnecdote] = useState('If it hurts, do it more often.')
 
   const handleAnecdote = () => {
     const updateSelected = Math.floor(Math.random()*8)
     setSelected(updateSelected)
     console.log('anecdote', selected)
-
   }
+
 
   const handleVote = () => {
     const copy = [...points]
@@ -48,6 +59,14 @@ const App = () => {
     setList(copy)
     console.log('tätä nyt updated', selected)
     console.log('uus lista', copy)
+    const updateHighest = Math.max(...copy)
+    setHighest(updateHighest)
+    console.log('highest value', highest)
+    const updatemostVoted = copy.indexOf(Math.max(...copy))
+    console.log('highest number', updatemostVoted)
+    const anecdotes_2 = [...anecdotes] 
+    const updatemostVotedAnecdote = anecdotes_2[updatemostVoted]
+    setMostVotedAnecdote(updatemostVotedAnecdote)
   }
 
   const handleGoodClick = () => {
@@ -74,10 +93,14 @@ const App = () => {
 
   return (
     <div>
+      <Header header={anecdote[1].title}/>
       {anecdotes[selected]} <br></br>
       has {points[selected]} votes <br></br>
       <Button text="vote" value={handleVote}/>
       <Button value={handleAnecdote} text="next anecdote"/>
+      <Header header={anecdote[0].title}/>
+      {mostVotedAnecdote} <br></br>
+      has {highest} votes
       <Header header={header.title} />
       <ButtonInfo goodClick={handleGoodClick} badClick={handleBadClick} 
       neutralClick={handleNeutralClick}/>

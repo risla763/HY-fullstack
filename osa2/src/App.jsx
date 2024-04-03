@@ -39,11 +39,16 @@ const App = () => {
 const Course = ({ course }) => {
   const [total, setTotal] = useState(42);
 
+const totall = course.parts.reduce( (s, p) => {
+  console.log('what is happening',s)
+  return s+p.exercises
+}, 0)
+
   return (
     <div>
       <Header course={course}/>
       <Content course={course}/>
-      <h3>total of {total} exercises</h3>
+      <h3>total of {totall} exercises</h3>
     </div>
   )
 }

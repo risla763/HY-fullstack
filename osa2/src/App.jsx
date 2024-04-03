@@ -1,7 +1,10 @@
+import React, { useState } from 'react';
+
 const App = () => {
   const course = {
     name: 'Half Stack application development',
     id: 1,
+    total: 'total of exercises',
     parts: [
       {
         name: 'Fundamentals of React',
@@ -17,6 +20,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
   }
@@ -29,32 +37,31 @@ const App = () => {
 }
 
 const Course = ({ course }) => {
+  const [total, setTotal] = useState(42);
+
   return (
     <div>
       <Header course={course}/>
       <Content course={course}/>
+      <h3>total of {total} exercises</h3>
     </div>
   )
-
 }
-
 
 const Header = ({ course }) => {
   console.log(course.name)
   return <h1>{course.name}</h1>
-  }
+}
 
-  const Content = ({ course }) => {
-    return (
-      <div>
-        <p>{course.parts[0].name} {course.parts[0].exercises}</p>
-        <p>{course.parts[1].name} {course.parts[1].exercises}</p>
-        <p>{course.parts[2].name} {course.parts[2].exercises}</p>
-      </div>
-    )
-  }
+const Content = ({ course }) => {
+  return (
+    <div>
+      <p>{course.parts[0].name} {course.parts[0].exercises}</p>
+      <p>{course.parts[1].name} {course.parts[1].exercises}</p>
+      <p>{course.parts[2].name} {course.parts[2].exercises}</p>
+      <p>{course.parts[3].name} {course.parts[3].exercises}</p>
+    </div>
+  )
+}
 
-
-
-
-export default App
+export default App;

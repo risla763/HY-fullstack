@@ -1,3 +1,7 @@
+import React from 'react';
+import { Course, MainHeader } from './Course'; 
+
+
 const App = () => {
   const courses = [
     {
@@ -53,50 +57,5 @@ const App = () => {
     </div>
   )
 }
-
-const MainHeader = ({ header }) => {
-  return <h1>{header}</h1>}
-
-const Course = ({ course }) => {
-
-const totall = course.parts.reduce( (s, p) => {
-  console.log('what is happening',s,p)
-  return s+p.exercises
-}, 0)
-
-  return (
-    <div>
-      <Header course={course}/>
-      <Content course={course}/>
-      <h3>total of {totall} exercises</h3>
-    </div>
-  )
-}
-
-const Header = ({ course }) => {
-  console.log(course.name)
-  return (<h2>{course.name}</h2>)
-}
-
-const Content = ({ course }) => {
-  return (
-    <div>
-      {course.parts.map(part => (
-        <p key={part.id}>{part.name} {part.exercises}</p>
-      ))}
-    </div>
-  )
-}
-
-
-/*const Content = ({ course }) => { 
-  return (
-    <div>
-      <p>{course.parts[0].name} {course.parts[0].exercises}</p>
-      <p>{course.parts[1].name} {course.parts[1].exercises}</p>
-      <p>{course.parts[2].name} {course.parts[2].exercises}</p>
-    </div>
-  )
-}*/
 
 export default App;

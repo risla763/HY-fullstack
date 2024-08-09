@@ -11,13 +11,21 @@ const App = () => {
   event.preventDefault()
   console.log('uusi henkilö LISÄTTY', event.target)
 
+  const IsInList = persons.some(person => person.name === newName)
+  console.log('TARKISTUS', IsInList )
+  console.log('LISTA', persons)
+
+  if (!IsInList) {
   const personObject = {
     name: newName,
     id: String(persons.length + 1),
   }
+
   setPersons(persons.concat(personObject))
   setNewPerson('')
-
+} else {
+  alert(`${newName} is already added to phonebook`)
+}
   }
 
   const handlePersonChange = (event) => {

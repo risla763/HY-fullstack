@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import FilterForm from './FilterForm';
+import AddPersonForm from './AddPersonForm';
+import ListOfPersons from './ListOfPersons';
+
+
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -13,81 +18,72 @@ const App = () => {
   const [searchPerson, setNewSearchPerson] = useState('')
   const [showAll, setShowAll] = useState(false)
 
-  const personsToShow = showAll 
-    ? persons
-    : persons.filter(person => 
-      person.name.toLowerCase().includes(searchPerson.toLowerCase())  ||
-      person.number.includes(searchPerson))
+  const personsToShow = showAll
+      ? persons
+      : persons.filter(person => 
+        person.name.toLowerCase().includes(searchPerson.toLowerCase())  ||
+        person.number.includes(searchPerson))
+      
 
   const addPerson = (event) => {
-  event.preventDefault()
+    event.preventDefault()
 
+    const IsInList = persons.some(person => person.name === newName)
 
-  const IsInList = persons.some(person => person.name === newName)
-  console.log('TARKISTUS', IsInList )
-  console.log('LISTA', persons)
+    if (!IsInList) {
+      const personObject = {
+        name: newName,
+        number: newNumber,
+        id: String(persons.length + 1),
+      }
 
-  if (!IsInList) {
-  const personObject = {
-    name: newName,
-    number: newNumber,
-    id: String(persons.length + 1),
-  }
+      setPersons(persons.concat(personObject))
+      setNewPerson('')
+      setNewNumber('')
+    } else {
+      alert(`${newName} is already added to phonebook`)
+    }
+      }
 
-  setPersons(persons.concat(personObject))
-  setNewPerson('')
-  setNewNumber('')
-} else {
-  alert(`${newName} is already added to phonebook`)
-}
-  }
 
   const handlePersonChange = (event) => {
     console.log(event.target.value, 'uusi nimi kentässä')
     setNewPerson(event.target.value)
   }
-
+  
   const handleNumberChange = (event) => {
     console.log(event.target.value, 'uusi number kentässä')
     setNewNumber(event.target.value)
   }
-
-
+  
+  
   const handleSearchChange = (event) => {
     setNewSearchPerson(event.target.value);
   }
+  
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>        
-        filter shown with<input id="searchInput" 
-        type="text " value={searchPerson}
-        onChange={handleSearchChange}/>              
-      </div>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input 
-          value = {newName} 
-          onChange={handlePersonChange}/>
-        </div>
-        <div>number: <input 
-        value = {newNumber}
-        onChange={handleNumberChange}/></div>
-        <div><button type="submit">add</button></div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {personsToShow.map(person => {
-        console.log('tässä listassa nimet',person.name);
-        return  <li key={person.name}> {person.name} {person.number}</li>
-        })}
-
-      </ul>
-
+      <FilterForm 
+      searchPerson={searchPerson}
+      handleSearchChange={handleSearchChange}
+      />
+      <h3>Add a new</h3>
+      <AddPersonForm
+      newName = {newName}
+      newNumber = {newNumber}
+      handlePersonChange= {handlePersonChange}
+      addPerson={addPerson}
+      handleNumberChange={handleNumberChange}
+      />
+      <h3>Numbers</h3>
+      <ListOfPersons
+      personsToShow = {personsToShow}
+      />
     </div>
   )
 
-}
+};
 
-export default App
+export default App;

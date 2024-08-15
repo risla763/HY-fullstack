@@ -3,7 +3,7 @@ import axios from 'axios'
 import FilterForm from './FilterForm';
 import AddPersonForm from './AddPersonForm';
 import ListOfPersons from './ListOfPersons';
-
+import personsService from './services/persons'
 
 
 const App = () => {
@@ -11,9 +11,8 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
 
   useEffect(() => {
-    console.log('effect')
-    axios.get('http://localhost:3002/persons').then(response => {
-      console.log('promise fulfilled', response.data)
+    personsService.getAll().then(response => {
+      console.log('promise fulfilled', personsService.getAll())
       setPersons(response.data)
     }
       )
@@ -44,8 +43,9 @@ const App = () => {
       }
 
       axios
-      .post('http://localhost:3002/persons', personObject)
+      personsService.create(personObject)
       .then(response => {
+        console.log('uusi objekti tietokantaan', personObject)
         setPersons(persons.concat(personObject))
         setNewPerson('')
         setNewNumber('')

@@ -27,8 +27,21 @@ const App = () => {
       ? persons
       : persons.filter(person => 
         person.name.toLowerCase().includes(searchPerson.toLowerCase())  ||
-        person.number.includes(searchPerson))
+        person.number.includes(searchPerson)
+        )
       
+  const handleDelete = (id) => {
+    const idfind = id
+    const personfound = persons.find(person => person.id === idfind)
+    if (window.confirm(`${personfound.name} Delete?`)) 
+      personsService.delete(id)
+      .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(error => {
+            console.error('Error deleting person:', error);
+        })
+    }
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -90,6 +103,7 @@ const App = () => {
       <h3>Numbers</h3>
       <ListOfPersons
       personsToShow = {personsToShow}
+      handleDelete={handleDelete}
       />
     </div>
   )

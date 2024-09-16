@@ -2,23 +2,13 @@
   "persons": [
     {
       "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
+      "number": "420",
       "id": "4"
-    },
-    {
-      "id": "6",
-      "name": "lol",
-      "number": "00-00"
     },
     {
       "id": "7",
       "name": "moroo",
       "number": "00230"
-    },
-    {
-      "id": "9",
-      "name": "uusi",
-      "number": "222"
     }
   ]
 }

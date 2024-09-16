@@ -12,7 +12,7 @@ const create = personObject => {
 }
 
 const update = (id, personObject) => {
-    console.log('uuteen sivuun', personObject)
+    console.log('uuteen sivuun', personObject, `${baseUrl}/${id}`)
     return axios.put(`${baseUrl}/${id}`,personObject)
 }
 

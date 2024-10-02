@@ -9,6 +9,13 @@ import personsService from './services/persons'
 const App = () => {
 
   const [persons, setPersons] = useState([]) 
+  const [newName, setNewPerson] = useState('')
+  const [newNumber,setNewNumber] = useState('')
+  const [searchPerson, setNewSearchPerson] = useState('')
+  const [showAll, setShowAll] = useState(false)
+  const [DeleteMessage, setDeleteMessage] = useState(null)
+  const [AddMessage, setAddMessage] = useState(null)
+  const [UpdateMessage, setUpdateMessage] = useState(null)
 
   useEffect(() => {
     personsService.getAll().then(response => {
@@ -17,11 +24,6 @@ const App = () => {
     }
       )
   }, [])
-
-  const [newName, setNewPerson] = useState('')
-  const [newNumber,setNewNumber] = useState('')
-  const [searchPerson, setNewSearchPerson] = useState('')
-  const [showAll, setShowAll] = useState(false)
 
   const personsToShow = showAll
       ? persons
@@ -33,15 +35,20 @@ const App = () => {
   const handleDelete = (id) => {
     const idfind = id
     const personfound = persons.find(person => person.id === idfind)
-    if (window.confirm(`${personfound.name} Delete?`)) 
+
+    if (window.confirm(`${personfound.name} Delete?`)) {
       personsService.delete(id)
       .then(() => {
           setPersons(persons.filter(person => person.id !== id))
+          setDeleteMessage(`Deleted '${personfound.name}'`) //`text'$()'`
+          setTimeout(() => {
+            setDeleteMessage(null)}, 5000)
         })
         .catch(error => {
             console.error('Error deleting person:', error);
         })
     }
+  }
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -62,20 +69,25 @@ const App = () => {
         setPersons(persons.concat(personObject))
         setNewPerson('')
         setNewNumber('')
+        setAddMessage(`Added ${newName}`)
+        setTimeout(() => {
+          setAddMessage(null)}, 5000)
       })
     } else {
-      (window.confirm(`${newName} is already added in phonebook, replace the old number with a new one?`)); {
+      if (window.confirm(`${newName} is already added in phonebook, replace the old number with a new one?`)); {
           const person = persons.find(person => person.name === newName)
           const UpdatedPerson = { name: newName, number: newNumber, id: String(person.id)}
           console.log("update the object", UpdatedPerson)
 
-          personsService.update(person.id, UpdatedPerson).then(
-            response => {
-              setPersons(persons.map(person => person.id === IsInList.id ? response.data : person))
-            }
-          )
-         }
-    }
+          personsService.update(person.id, UpdatedPerson)
+            .then(response => {
+                setPersons(persons.map(person => person.id === IsInList.id ? response.data : person))
+                setUpdateMessage(`Updated ${newName}'s number to ${newNumber}`)
+                setTimeout(() => {
+                  setUpdateMessage(null)}, 5000)
+            })
+          } // tähän vasta .then sulku
+          }
       }
 
 
@@ -109,11 +121,14 @@ const App = () => {
       handlePersonChange= {handlePersonChange}
       addPerson={addPerson}
       handleNumberChange={handleNumberChange}
+      addMessage = {AddMessage}
+      updateMessage = {UpdateMessage}
       />
       <h3>Numbers</h3>
       <ListOfPersons
       personsToShow = {personsToShow}
       handleDelete={handleDelete}
+      deleteMessage = {DeleteMessage}
       />
     </div>
   )

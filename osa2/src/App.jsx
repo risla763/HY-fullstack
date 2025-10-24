@@ -16,10 +16,11 @@ const App = () => {
   const [DeleteMessage, setDeleteMessage] = useState(null)
   const [AddMessage, setAddMessage] = useState(null)
   const [UpdateMessage, setUpdateMessage] = useState(null)
+  const [ErrorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personsService.getAll().then(response => {
-      console.log('promise fulfilled', personsService.getAll())
+      console.log('promise fulfilled', response)
       setPersons(response.data)
     }
       )
@@ -40,7 +41,7 @@ const App = () => {
       personsService.delete(id)
       .then(() => {
           setPersons(persons.filter(person => person.id !== id))
-          setDeleteMessage(`Deleted '${personfound.name}'`) //`text'$()'`
+          setDeleteMessage(`Deleted ${personfound.name}`)
           setTimeout(() => {
             setDeleteMessage(null)}, 5000)
         })
@@ -74,17 +75,20 @@ const App = () => {
           setAddMessage(null)}, 5000)
       })
     } else {
-      if (window.confirm(`${newName} is already added in phonebook, replace the old number with a new one?`)); {
+    if (window.confirm(`${newName} is already added in phonebook, replace the old number with a new one?`)) {
           const person = persons.find(person => person.name === newName)
           const UpdatedPerson = { name: newName, number: newNumber, id: String(person.id)}
           console.log("update the object", UpdatedPerson)
 
-          personsService.update(person.id, UpdatedPerson)
-            .then(response => {
+          personsService.update(person.id, UpdatedPerson).then(response => {
                 setPersons(persons.map(person => person.id === IsInList.id ? response.data : person))
                 setUpdateMessage(`Updated ${newName}'s number to ${newNumber}`)
-                setTimeout(() => {
-                  setUpdateMessage(null)}, 5000)
+                setTimeout(() => 
+                  setUpdateMessage(null), 5000)})
+            .catch(error => { 
+              setErrorMessage(`Information of ${newName} has already been removed from server`)
+              setTimeout(() => {
+              setErrorMessage(null)}, 5000)
             })
           } // tähän vasta .then sulku
           }
@@ -110,7 +114,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {AddMessage && <div className="addNotification">{AddMessage}</div>}
+      {UpdateMessage && <div className="updateNotification">{UpdateMessage}</div>}
+      {DeleteMessage && <div className="deleteNotification">{DeleteMessage}</div>}
+      {ErrorMessage && <div className="errorNotification">{ErrorMessage}</div>}
       <FilterForm 
+      
       searchPerson={searchPerson}
       handleSearchChange={handleSearchChange}
       />
@@ -121,14 +130,11 @@ const App = () => {
       handlePersonChange= {handlePersonChange}
       addPerson={addPerson}
       handleNumberChange={handleNumberChange}
-      addMessage = {AddMessage}
-      updateMessage = {UpdateMessage}
       />
       <h3>Numbers</h3>
       <ListOfPersons
       personsToShow = {personsToShow}
       handleDelete={handleDelete}
-      deleteMessage = {DeleteMessage}
       />
     </div>
   )

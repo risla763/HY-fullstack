@@ -3,7 +3,9 @@ const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => {
     console.log('URL', baseUrl)
-    return axios.get(baseUrl)
+    return axios.get(baseUrl).catch(error => {
+        console.log('fail')
+    })
 }
 
 const create = personObject => {
@@ -13,11 +15,17 @@ const create = personObject => {
 
 const update = (id, personObject) => {
     console.log('uuteen sivuun', personObject, `${baseUrl}/${id}`)
-    return axios.put(`${baseUrl}/${id}`,personObject)
+    return axios
+    .put(`${baseUrl}/${id}`,personObject)
+    .then(updatedPersonObject => {
+        updatedPersonObject.data
+    })
 }
 
 const deletePerson = (id) => {
-    return axios.delete(`${baseUrl}/${id}`);
+    return axios.delete(`${baseUrl}/${id}`).catch(error => {
+        console.log('fail')
+    })
 }
 export default { 
     getAll: getAll, 

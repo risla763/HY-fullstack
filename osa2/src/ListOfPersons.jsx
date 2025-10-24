@@ -10,7 +10,6 @@ const ListOfPersons = ({ personsToShow, handleDelete, deleteMessage }) => {
         <button onClick={() => handleDelete(person.id)}>delete</button></li>
         })}
       </ul>
-    {deleteMessage && <div className="deleteNotification">{deleteMessage}</div>}
     </div>
   )
 }

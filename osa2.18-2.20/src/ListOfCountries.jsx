@@ -1,6 +1,15 @@
-import React from 'react';
+import {React, useEffect, useState} from 'react';
 
 const ListOfCountries = ({ countriesToShow }) => {
+  const [countrySelected, setCountry] = useState(null)
+
+  useEffect(() => {
+    if (countriesToShow?.length !== 1) {
+      setCountry(null);
+    }
+  }, [countriesToShow?.length]);
+
+
   if (countriesToShow === null) return null
   if (countriesToShow === 'Liian monta maata') {
     return <div>Too many matches, specify another filter</div>;
@@ -24,6 +33,22 @@ const ListOfCountries = ({ countriesToShow }) => {
       </div>
     )
   }
+  if (countrySelected) {
+    return (
+      <div>
+        <h2>{countrySelected.name.common}</h2>
+        <p>Capital: {countrySelected.capital[0]}</p>
+        <p>Area: {countrySelected.area}</p>
+        <h3>Languages:</h3>
+        <ul>
+          {Object.values(countrySelected.languages).map(language => (
+            <li key={language}>{language}</li>
+          ))}
+        </ul>
+        <img src={countrySelected.flags.png} />
+      </div>
+    )
+  }
   return (
     <div>
       <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
@@ -31,6 +56,9 @@ const ListOfCountries = ({ countriesToShow }) => {
         console.log('Moi from listofcountries',country.name.common);
         return  <li 
         key={country.name.common}> {country.name.common}
+        <button onClick={() => setCountry(country)}
+        style={{ color: 'black', backgroundColor: 'white' }}
+          >show</button>
         </li>
         })}
       </ul>

@@ -9,7 +9,7 @@ const getAll = () => {
 }
 
 const create = countryObject => {
-    console.log('uusi objecti', countryObject)
+    console.log('uusi objekti', countryObject)
     return axios.post(baseUrl, countryObject)
 }
 

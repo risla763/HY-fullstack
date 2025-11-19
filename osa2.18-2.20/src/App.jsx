@@ -6,6 +6,8 @@ import countryService from './services/countryService.js'
 import ListOfCountries from './ListOfCountries.jsx'
 
 
+
+
 function App() {
   const [count, setCount] = useState(0)
   const [searchCountry, setSearchCountry] = useState('')
@@ -17,7 +19,6 @@ function App() {
 
   useEffect(() => {
     countryService.getAll().then(response => {
-      console.log('promise fulfilled', response)
       setCountries(response.data)
     }
       )
@@ -33,7 +34,7 @@ function App() {
         country.name.common.toLowerCase().includes(searchCountry.toLowerCase())
         )
       if (countriesToShow.length > 10) {
-        console.log('Liian monta maata');
+        console.log('Liian monta maata')
         setContent('Liian monta maata')
       }
       else {
@@ -46,7 +47,8 @@ function App() {
   const handleSearchCountry = (event) => {
     setSearchCountry(event.target.value);
   }
-// SearchCountryForm on komponentti, joka eri tiedostossa
+
+
 //Hoitaa searchbarin ja saa komponentiksi kaksi alla olevaa
   return (
     <div>
@@ -57,7 +59,6 @@ function App() {
   <ListOfCountries 
     countriesToShow={content}
     />
-
     </div>
   )
 }

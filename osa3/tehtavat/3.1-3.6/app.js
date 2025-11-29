@@ -82,9 +82,13 @@ app.get('/api/info',(request, response) => {
         }
 
         if (!body.number) {
-            return response.status(400).json({ error: 'number missing' });
+            return response.status(400).json({ error: 'number missing' })
         }
         
+        if (notes.map(n => n.content).includes(body.content))
+        {            
+        return response.status(400).json({ error: 'name must be unique' })
+    }
         const person = {
             id: generateId(),
             content: body.content,

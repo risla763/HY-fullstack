@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
 app.use(express.json())
+
+app.use(morgan('tiny'))
 
 let notes = [
   {
@@ -48,6 +51,8 @@ app.get('/api/info',(request, response) => {
                                                                              ${monthWord} ${wordDay} ${day} ${year} ${hours}:${minutes}:${seconds} GMT+0200 (Eastern European Standard Time)`
     response.end(message)
 })
+
+
 
     app.get('/api/persons/:id',(request, response) => {
         const id = request.params.id

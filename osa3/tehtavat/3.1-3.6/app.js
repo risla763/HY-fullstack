@@ -4,27 +4,47 @@ const morgan = require('morgan')
 
 app.use(express.json())
 
-app.use(morgan('tiny'))
+app.use(morgan(function (tokens, request, response) {
+    if (request.method === 'POST'){
+        return [
+    tokens.method(request, response),
+    tokens.url(request, response),
+    tokens.status(request, response),
+    tokens.res(request, response, 'name-length'), '-',
+    tokens['response-time'](request, response), 'ms'
+    ].join(' ') + ' '
+    + JSON.stringify(request.body)
+    }
+    return [
+    tokens.method(request, response),
+    tokens.url(request, response),
+    tokens.status(request, response),
+    tokens.res(request, response, 'name-length'), '-',
+    tokens['response-time'](request, response), 'ms'
+    ].join(' ')
+}))
+
+
 
 let notes = [
   {
     id: "1",
-    content: "Arto Hellas",
+    name: "Arto Hellas",
     number: "040-123456"
   },
   {
     id: "2",
-    content: "Ada Lovelace",
+    name: "Ada Lovelace",
     number: "39-44-5323523"
   },
   {
     id: "3",
-    content: "Dan Abramov",
+    name: "Dan Abramov",
     number: "12-43-234345"
   },
   {
     id: "4",
-    content: "Mary Poppendieck",
+    name: "Mary Poppendieck",
     number: "39-23-6423122"
   }
 ]
@@ -81,8 +101,8 @@ app.get('/api/info',(request, response) => {
     app.post('/api/persons',(request, response) => {
         const body = request.body
 
-        if (!body.content) {
-            return response.status(400).json({error: 'content missing'
+        if (!body.name) {
+            return response.status(400).json({error: 'name missing'
             })
         }
 
@@ -90,13 +110,13 @@ app.get('/api/info',(request, response) => {
             return response.status(400).json({ error: 'number missing' })
         }
         
-        if (notes.map(n => n.content).includes(body.content))
+        if (notes.map(n => n.name).includes(body.name))
         {            
         return response.status(400).json({ error: 'name must be unique' })
     }
         const person = {
             id: generateId(),
-            content: body.content,
+            name: body.name,
             number: body.number,
         }
         
